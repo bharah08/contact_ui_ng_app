@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: contactbackendappdeployment
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: contactfn
+ template:
+  metadata:
+   name: contactfn
+   labels:
+     app: contactfn
+  spec:
+    containers:
+    - name: contactbackendcontainer
+      image: bharath0812/spring:3.0
+      ports:
+      - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: httpdservice
+spec:
+ type: NodePort
+ selector:
+   app: contactfn
+ ports:
+   - port: 80
+     targetPort: 8080
+     nodePort: 32140
+     protocol: TCP
